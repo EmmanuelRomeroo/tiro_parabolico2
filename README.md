@@ -1,1 +1,2 @@
 # tiro_parabolico2
+se va a cargar el codigo del tiro parabolico y añadiremos nuevas funciones. el primero compañero hara que la velocidad del proyectil y los balones sea mas rapida mientras el otro hara que el juego nunca termine de manera que los balones al salir de la ventana se reposicionen 
