@@ -1,4 +1,4 @@
-"""Cannon con proyectil y blancos más rápidos."""
+"""Cannon con mayor velocidad y blancos que reaparecen."""
 
 from random import randrange
 from turtle import *
@@ -15,8 +15,6 @@ def tap(x, y):
     if not inside(ball):
         ball.x = -199
         ball.y = -199
-
-        # Antes se dividía entre 25; ahora la velocidad es el doble.
         speed.x = (x + 200) / 12.5
         speed.y = (y + 200) / 12.5
 
@@ -42,32 +40,34 @@ def draw():
 
 
 def move():
-    """Mueve el proyectil y los blancos."""
+    """Mueve los objetos y reposiciona los blancos que salen."""
     if randrange(40) == 0:
         y = randrange(-150, 150)
         targets.append(vector(200, y))
 
     for target in targets:
-        # Antes avanzaban 0.5 píxeles por actualización.
         target.x -= 1.0
+
+        # Si sale por la izquierda, reaparece por la derecha.
+        if target.x <= -200:
+            target.x = 199
+            target.y = randrange(-150, 150)
 
     if inside(ball):
         speed.y -= 0.35
         ball.move(speed)
 
+    # Elimina los blancos alcanzados por el proyectil.
     dupe = targets.copy()
     targets.clear()
 
     for target in dupe:
-        if abs(target - ball) > 13:
+        if not inside(ball) or abs(target - ball) > 13:
             targets.append(target)
 
     draw()
 
-    for target in targets:
-        if not inside(target):
-            return
-
+    # Siempre programa la siguiente actualización.
     ontimer(move, 50)
 
 
