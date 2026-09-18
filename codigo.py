@@ -1,25 +1,33 @@
+"""Cannon con proyectil y blancos más rápidos."""
+
 from random import randrange
 from turtle import *
+
 from freegames import vector
 
 ball = vector(-200, -200)
 speed = vector(0, 0)
 targets = []
 
+
 def tap(x, y):
-    "Respond to screen tap."
+    """Dispara hacia la posición del clic."""
     if not inside(ball):
         ball.x = -199
         ball.y = -199
-        speed.x = (x + 200) / 25
-        speed.y = (y + 200) / 25
+
+        # Antes se dividía entre 25; ahora la velocidad es el doble.
+        speed.x = (x + 200) / 12.5
+        speed.y = (y + 200) / 12.5
+
 
 def inside(xy):
-    "Return True if xy within screen."
+    """Comprueba si una posición está dentro de la pantalla."""
     return -200 < xy.x < 200 and -200 < xy.y < 200
 
+
 def draw():
-    "Draw ball and targets."
+    """Dibuja el proyectil y los blancos."""
     clear()
 
     for target in targets:
@@ -32,15 +40,16 @@ def draw():
 
     update()
 
+
 def move():
-    "Move ball and targets."
+    """Mueve el proyectil y los blancos."""
     if randrange(40) == 0:
         y = randrange(-150, 150)
-        target = vector(200, y)
-        targets.append(target)
+        targets.append(vector(200, y))
 
     for target in targets:
-        target.x -= 0.5
+        # Antes avanzaban 0.5 píxeles por actualización.
+        target.x -= 1.0
 
     if inside(ball):
         speed.y -= 0.35
@@ -61,10 +70,12 @@ def move():
 
     ontimer(move, 50)
 
+
 setup(420, 420, 370, 0)
 hideturtle()
 up()
 tracer(False)
 onscreenclick(tap)
+
 move()
 done()
